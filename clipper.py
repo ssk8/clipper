@@ -3,15 +3,17 @@ import qbittorrent
 from os import environ
 from sys import argv
 
-separate, current_cb = ' ', ['']
-
+torrent_box_address = 'http://192.168.1.106:8080/'
 
 def add_torrents(links_list):
     print('\n\n', 'sending to torrent box')
-    qb = qbittorrent.Client('http://192.168.1.144:8080/')
+    qb = qbittorrent.Client(torrent_box_address)
     qb.login(environ['QBIT_NAME'], environ['QBIT_PW'])
     [qb.download_from_link(ct) for ct in links_list]
+    print(f'sent {len(links_list)} torrents to {torrent_box_address}')
 
+
+separate, current_cb = ' ', ['']
 
 if '-n' in argv[1:]:
     separate = '\n\n'
@@ -32,6 +34,5 @@ try:
 except KeyboardInterrupt:
     if '-t' in argv[1:]:
         add_torrents(current_cb)
-    print('\n\n', separate.join(current_cb))
+    #print('\n', separate.join(current_cb))
     pyperclip.copy(separate.join(current_cb))
-
