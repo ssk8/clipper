@@ -32,6 +32,7 @@ try:
             current_cb.append(pyperclip.paste())
 
 except KeyboardInterrupt:
+    current_cb.pop(0)
     if '-t' in argv[1:]:
         add_torrents(current_cb)
     #print('\n', separate.join(current_cb))
