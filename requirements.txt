@@ -1,2 +1,2 @@
 pyperclip
-python-qbittorrent
+qbittorrent-api

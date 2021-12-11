@@ -1,39 +1,37 @@
-import pyperclip
-import qbittorrent
-from os import environ
-from sys import argv
+#!/usr/bin/python3
 
-torrent_box_address = 'http://192.168.1.106:8080/'
+import pyperclip, qbittorrentapi
+from os import environ
+import _thread
+
+
+tbox_address = 'http://192.168.1.106'
+
+def input_thread(stop_list):
+    input()
+    stop_list.append(True)
+
 
 def add_torrents(links_list):
-    print('\n\n', 'sending to torrent box')
-    qb = qbittorrent.Client(torrent_box_address)
-    qb.login(environ['QBIT_NAME'], environ['QBIT_PW'])
-    [qb.download_from_link(ct) for ct in links_list]
-    print(f'sent {len(links_list)} torrents to {torrent_box_address}')
+    print('attempting to send')
+    qb = qbittorrentapi.Client(host=tbox_address, port=8080, username=environ['QBIT_NAME'], password=environ['QBIT_PW'])
+    qb.auth_log_in() 
+    qb.torrents_add(urls=links_list)
+    print(f'sent {len(links_list)} torrents to {tbox_address}')
 
 
-separate, current_cb = ' ', ['']
-
-if '-n' in argv[1:]:
-    separate = '\n\n'
-    print("new line")
-
-if '-c' in argv[1:]:
-    separate = ', '
-    print("comma separated")
-
-pyperclip.copy(current_cb[0])
-
-try:
-    while True:
+def main():
+    print("press enter to send new clipboard coppies to tbox")
+    current_cb = ['']
+    pyperclip.copy(current_cb[0])
+    stop_list = []
+    _thread.start_new_thread(input_thread, (stop_list,))
+    while not stop_list:
         if current_cb[-1] != pyperclip.paste():
             print(pyperclip.paste())
             current_cb.append(pyperclip.paste())
 
-except KeyboardInterrupt:
-    current_cb.pop(0)
-    if '-t' in argv[1:]:
-        add_torrents(current_cb)
-    #print('\n', separate.join(current_cb))
-    pyperclip.copy(separate.join(current_cb))
+    add_torrents(current_cb[1:])
+
+if __name__ == "__main__":
+    main()
