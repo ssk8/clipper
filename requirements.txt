@@ -1,2 +1,3 @@
 pyperclip
 qbittorrent-api
+youtube-dl
