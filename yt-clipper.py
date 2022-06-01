@@ -40,10 +40,12 @@ def main():
             vid_list.append(new_clip)
             print(f'added: {new_clip}')
     ydl_opts = {
-        'format': 'best',
+        "format": "bestvideo[height<=480]+bestaudio/best[height<=480]",
         'outtmpl': '/home/curt/Videos/yt/%(title)s.%(ext)s',
     }
-    if vid_list: dl_vids(vid_list, ydl_opts)
+    if vid_list:
+        print("Done clipping, start downloading!")
+        dl_vids(vid_list, ydl_opts)
 
 if __name__ == "__main__":
     main()
