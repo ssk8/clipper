@@ -1,9 +1,16 @@
 # clipper
-This takes new clipboard copies and then, on pressing enter in the terminal window, sends those to tbox
 
-install xclip for linux (pacman)
-and add creds to .zshrc like this:
-```
-export QBIT_NAME='user'
-export QBIT_PW='password'
-```
+don't forget to:
+- install xclip for linux (pacman)
+- pip install -r requirements.txt
+
+also, for clipper, and add tbox creds to .bashrc/.zshrc like this:
+
+    ```bash
+    export QBIT_NAME='user'
+    export QBIT_PW='password'
+    ```
+## yt-clipper
+takes youtube urls from clipboard and downloads them to Videos/yt at low res
+## clipper
+takes magnet links from clipboard copies and then sends those to tbox
