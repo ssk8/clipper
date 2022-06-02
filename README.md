@@ -6,10 +6,10 @@ don't forget to:
 
 also, for clipper, and add tbox creds to .bashrc/.zshrc like this:
 
-    ```bash
-    export QBIT_NAME='user'
-    export QBIT_PW='password'
-    ```
+```bash
+export QBIT_NAME='user'
+export QBIT_PW='password'
+```
 ## yt-clipper
 takes youtube urls from clipboard and downloads them to Videos/yt at low res
 ## clipper
