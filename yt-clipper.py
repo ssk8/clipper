@@ -41,7 +41,7 @@ def main():
             print(f'added: {new_clip}')
     ydl_opts = {
         "format": "bestvideo[height<=480]+bestaudio/best[height<=480]",
-        'outtmpl': '/home/curt/Videos/yt/%(title)s.%(ext)s',
+        'outtmpl': '~/Videos/yt/%(title)s.%(ext)s',
     }
     if vid_list:
         print("Done clipping, start downloading!")
