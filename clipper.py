@@ -43,7 +43,7 @@ def main():
     while not stop_list:
         if new_clip:=check_clipboard():
             mag_list.append(new_clip)
-            print(f'added: {new_clip}')
+            print(f'added: {new_clip[64:94]}')
 
     add_torrents(mag_list)
 
