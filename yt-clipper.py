@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import youtube_dl
 import pyperclip
 import _thread
@@ -22,17 +23,26 @@ def check_clipboard():
         return new_clip
 
 
+def get_cl_args():
+    parser = argparse.ArgumentParser(description='add these torrents')
+    parser.add_argument('links', type=str, nargs='*')
+    args = parser.parse_args()
+    return args
+
+
 def start_up():
+    cla = get_cl_args()
+    vid_list = cla.links
     print("System clipboard to youtube-dl. Press enter when done")
     if new_clip:=check_clipboard():
         resp = input("But first, download current clipboard? (default yes)")
         if not resp.lower().startswith('n'):
             pyperclip.copy(new_clip)
+    return vid_list
 
 
 def main():
-    start_up()
-    vid_list = []
+    vid_list = start_up()
     stop_list = []
     _thread.start_new_thread(input_thread, (stop_list,))
     while not stop_list:
