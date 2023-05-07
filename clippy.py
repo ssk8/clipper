@@ -6,6 +6,13 @@ import pyperclip
 import _thread
 
 
+ydl_opts = {
+        "format": "bestvideo[height<=480]+bestaudio/best[height<=480]",
+        "subtitleslangs": ["en"], 
+        "writesubtitles": True,
+        'outtmpl': '~/Videos/yt/%(title)s.%(ext)s',
+    }
+
 def input_thread(stop_list):
     input()
     stop_list.append(True)
@@ -24,7 +31,7 @@ def check_clipboard():
 
 
 def get_cl_args():
-    parser = argparse.ArgumentParser(description='add these torrents')
+    parser = argparse.ArgumentParser(description='add these vids')
     parser.add_argument('links', type=str, nargs='*')
     args = parser.parse_args()
     return args
@@ -49,10 +56,7 @@ def main():
         if new_clip:=check_clipboard():
             vid_list.append(new_clip)
             print(f'added: {new_clip}')
-    ydl_opts = {
-        "format": "bestvideo[height<=480]+bestaudio/best[height<=480]",
-        'outtmpl': '~/Videos/yt/%(title)s.%(ext)s',
-    }
+
     if vid_list:
         print("Done clipping, start downloading!")
         dl_vids(vid_list, ydl_opts)
