@@ -7,7 +7,7 @@ import _thread
 
 
 ydl_opts = {
-        "format": "bestvideo[height<=480]+bestaudio/best[height<=480]",
+        "format": "bestvideo[height=720]+bestaudio/best",
         "subtitleslangs": ["en"], 
         "writesubtitles": True,
         'outtmpl': '~/Videos/yt/%(title)s.%(ext)s',
