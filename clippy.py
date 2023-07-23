@@ -4,6 +4,7 @@ import argparse
 import yt_dlp
 import pyperclip
 import _thread
+from time import sleep
 
 
 ydl_opts = {
@@ -12,6 +13,12 @@ ydl_opts = {
         "writesubtitles": True,
         'outtmpl': '~/Videos/yt/%(title)s.%(ext)s',
     }
+
+patterns = [
+    "https://www.youtube.com/",
+    "https://youtu.be/"
+]
+
 
 def input_thread(stop_list):
     input()
@@ -25,7 +32,8 @@ def dl_vids(vid_list, ydl_opts = {}):
 
 
 def check_clipboard():
-    if new_clip:=pyperclip.paste():
+    new_clip=pyperclip.paste()
+    if any(p in new_clip for p in patterns):
         pyperclip.copy('')
         return new_clip
 
@@ -56,6 +64,7 @@ def main():
         if new_clip:=check_clipboard():
             vid_list.append(new_clip)
             print(f'added: {new_clip}')
+        sleep(1)
 
     if vid_list:
         print("Done clipping, start downloading!")
