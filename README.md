@@ -1,7 +1,7 @@
 # clipper
 
 don't forget to:
-- install xclip for linux (pacman)
+- install wl-clipboard (Wayland) or xclip for linux (pacman)
 - pip install -r requirements.txt
 
 also, for clipper, and add tbox creds to .bashrc/.zshrc like this:
