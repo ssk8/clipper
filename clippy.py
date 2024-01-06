@@ -26,9 +26,17 @@ def input_thread(stop_list):
 
 
 def dl_vids(vid_list, ydl_opts = {}):
-    for vid in vid_list: print(vid)
+    clean_vid_list = []
+    for vid in vid_list:
+        if 'watch?v=' in vid:
+            start = vid.find('watch?v=') + 8
+        else: 
+            start = vid.rfind('/')+1
+        clean = vid[start: start + 11]
+        print(vid, clean)
+        clean_vid_list.append(clean)
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(vid_list)
+        ydl.download(clean_vid_list)
 
 
 def check_clipboard():
