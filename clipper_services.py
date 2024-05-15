@@ -33,3 +33,8 @@ def add_torrents(links_list):
     qb.auth_log_in()
     qb.torrents_add(urls=links_list)
     print(f"sent {len(links_list)} torrents to {tbox_address}")
+
+
+def write_to_file(text):
+    with open("/home/curt/clips.txt", "a") as clips_file:
+        clips_file.write(text + "\n")

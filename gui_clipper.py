@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import tkinter as tk
 from tkinter import ttk
 import pyperclip
@@ -9,16 +10,21 @@ ytdl_opts = {
         "format": "bestvideo[height=720]+bestaudio/best",
         "subtitleslangs": ["en"],
         "writesubtitles": True,
-        "outtmpl": "~/Videos/yt/%(title)s.%(ext)s",
+        "outtmpl": "~/Videos/yt/%(title)s.%(id)s.%(ext)s",
     },
     "Higher quality (1080p)": {
         "format": "bestvideo[height=1080]+bestaudio/best",
         "subtitleslangs": ["en"],
         "writesubtitles": True,
-        "outtmpl": "~/Videos/yt/%(title)s.%(ext)s",
+        "outtmpl": "~/Videos/yt/%(title)s.%(id)s.%(ext)s",
     },
     "Audio only": {
         "format": "m4a/bestaudio/best",
+        "outtmpl": "~/Music/yt/%(title)s.%(id)s.%(ext)s",
+    },
+    "Audio only → mp3": {
+        "format": "m4a/bestaudio/best",
+        "outtmpl": "~/Music/yt/%(title)s.%(id)s.%(ext)s",
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -38,7 +44,7 @@ patterns = {
 class Clipper(tk.Tk):
 
     def __init__(self) -> None:
-        self.clip: str = "empty clipboard"
+        self.clip = ""
         super().__init__()
         self.resizable(0, 0)
         self.geometry("800x400")
@@ -66,11 +72,17 @@ class Clipper(tk.Tk):
         self.mainloop()
 
     def update(self):
-        if new_clip := pyperclip.paste():
+        new_clip = pyperclip.paste()
+        if not new_clip:
+            text = f"clipboard empty"
+        elif new_clip != self.clip:
+            if self.clip:
+                self.process_clip()
             self.clip = new_clip
-            self.clip_message.configure(text=f"Current: {self.clip}")
+            text = f"Current: {self.clip}"
         else:
-            self.clip_message.configure(text=f"Current: clipboard empty")
+            text = f"Current: {self.clip}"
+        self.clip_message.configure(text=text)
         self.clip_message.after(800, self.update)
 
     def change_button(self):
@@ -78,22 +90,23 @@ class Clipper(tk.Tk):
         self.button.config(text=self.current_ytdl_opts)
 
     def clear(self):
-        pyperclip.copy('')
+        pyperclip.copy("")
         self.clip = ""
-        
 
     def process_clip(self):
         if any(p in self.clip for p in patterns["yt"]):
             clipper_services.dl_vids([self.clip], ytdl_opts[self.current_ytdl_opts])
 
-        if any(p in self.clip for p in patterns["torrent"]):
+        elif any(p in self.clip for p in patterns["torrent"]):
             clipper_services.add_torrents([self.clip])
 
+        else:
+            clipper_services.write_to_file(self.clip)
+
         print(f"processed {self.clip}")
-        pyperclip.copy('')
+        self.clear()
 
     def quit_clipper(self):
-        self.process_clip()
         self.destroy()
 
 
