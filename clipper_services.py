@@ -2,7 +2,6 @@ import yt_dlp
 import qbittorrentapi
 from os import environ
 
-
 tbox_address = "http://192.168.1.106"
 
 
@@ -21,7 +20,7 @@ def dl_vids(vid_list, ydl_opts={}):
         print(f"getting {clean_vid_list}")
 
 
-def add_torrents(links_list):
+def add_torrents(links_list, location):
     print("attempting to send:\n")
     print(links_list)
     qb = qbittorrentapi.Client(
@@ -31,10 +30,11 @@ def add_torrents(links_list):
         password=environ["QBIT_PW"],
     )
     qb.auth_log_in()
-    qb.torrents_add(urls=links_list)
+    qb.torrents_add(urls=links_list, save_path=location)
     print(f"sent {len(links_list)} torrents to {tbox_address}")
 
 
 def write_to_file(text):
-    with open("/home/curt/clips.txt", "a") as clips_file:
-        clips_file.write(text + "\n")
+    if text:
+        with open("/home/curt/clips.txt", "a") as clips_file:
+            clips_file.write(text + "\n")
