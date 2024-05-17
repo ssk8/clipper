@@ -21,7 +21,7 @@ def dl_vids(vid_list, ydl_opts={}):
 
 
 def add_torrents(links_list, location):
-    print("attempting to send:\n")
+    print(f"attempting to send to {location}:\n")
     print(links_list)
     qb = qbittorrentapi.Client(
         host=tbox_address,
