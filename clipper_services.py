@@ -8,7 +8,9 @@ tbox_address = "http://192.168.1.106"
 def dl_vids(vid_list, ydl_opts={}):
     clean_vid_list = []
     for vid in vid_list:
-        if "watch?v=" in vid:
+        if "app=desktop&v=" in vid:
+            start = vid.find("app=desktop&v=") + 14
+        elif "watch?v=" in vid:
             start = vid.find("watch?v=") + 8
         else:
             start = vid.rfind("/") + 1
